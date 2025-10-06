@@ -49,103 +49,122 @@
         <div class="rating-stars"><input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label><input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label><input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label><input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label><input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label></div>
         <button id="submit-btn">SUBMIT</button>
     </div>
-    <script>
-        const roomServiceList = document.getElementById('room-service-list');
-        const submitBtn = document.getElementById('submit-btn');
-        function formatRupiah(number) {
-            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+<script>
+    const roomServiceList = document.getElementById('room-service-list');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function formatRupiah(number) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+    }
+
+    function calculateTotal() {
+        let subtotal = 0;
+        const items = roomServiceList.querySelectorAll('.quantity-input');
+        
+        items.forEach(item => {
+            const price = parseFloat(item.dataset.price);
+            // Pastikan quantity adalah angka, jika tidak, anggap 0
+            const quantity = parseInt(item.value) || 0;
+            subtotal += price * quantity;
+        });
+
+        const tax = subtotal * 0.21;
+        const total = subtotal + tax;
+
+        document.getElementById('subtotal').textContent = formatRupiah(subtotal);
+        document.getElementById('tax').textContent = formatRupiah(tax);
+        document.getElementById('total-price').textContent = formatRupiah(total);
+    }
+
+    // Listener untuk jika tamu mengetik langsung angkanya
+    roomServiceList.addEventListener('input', function(event) {
+        if (event.target.classList.contains('quantity-input')) {
+            calculateTotal();
         }
-        function calculateTotal() {
-            let subtotal = 0;
-            const items = roomServiceList.querySelectorAll('.quantity-input');
-            items.forEach(item => {
+    });
+
+    // Listener BARU yang lebih sederhana untuk tombol + dan -
+    roomServiceList.addEventListener('click', function(event) {
+        const target = event.target;
+        if (target.classList.contains('quantity-btn')) {
+            const action = target.dataset.action;
+            const input = target.parentElement.querySelector('.quantity-input');
+            let currentValue = parseInt(input.value) || 0;
+
+            if (action === 'increase') {
+                input.value = currentValue + 1;
+            } else if (action === 'decrease' && currentValue > 0) {
+                input.value = currentValue - 1;
+            }
+            
+            // Langsung panggil fungsi kalkulasi, tanpa perantara
+            calculateTotal();
+        }
+    });
+    
+    // Fungsi Submit (tidak ada perubahan)
+    submitBtn.addEventListener('click', function() {
+        const nomorWhatsAppTujuan = '628112107117'; // Pastikan nomor ini benar
+        const nomorKamar = document.getElementById('nomor-kamar').value;
+
+        if (!nomorKamar) {
+            alert('Mohon isi nomor kamar Anda terlebih dahulu.');
+            return;
+        }
+        
+        let message = `*--- PERMINTAAN BARU ---*\n`;
+        message += `*KAMAR NOMOR: ${nomorKamar}*\n\n`;
+
+        const amenities = document.querySelectorAll('#amenities-list input:checked');
+        if (amenities.length > 0) {
+            message += `*A. ROOM AMENITIES:*\n`;
+            amenities.forEach(item => { message += `- ${item.value}\n`; });
+            message += `\n`;
+        }
+
+        const roomServiceItems = document.querySelectorAll('#room-service-list .quantity-input');
+        let hasRoomServiceOrder = false;
+        let roomServiceMessage = `*B. ROOM SERVICE:*\n`;
+        roomServiceItems.forEach(item => {
+            const quantity = parseInt(item.value) || 0;
+            if (quantity > 0) {
+                hasRoomServiceOrder = true;
+                const name = item.dataset.name;
                 const price = parseFloat(item.dataset.price);
-                const quantity = parseInt(item.value);
-                subtotal += price * quantity;
-            });
-            const tax = subtotal * 0.21;
-            const total = subtotal + tax;
-            document.getElementById('subtotal').textContent = formatRupiah(subtotal);
-            document.getElementById('tax').textContent = formatRupiah(tax);
-            document.getElementById('total-price').textContent = formatRupiah(total);
+                roomServiceMessage += `- ${name} (x${quantity}) - ${formatRupiah(price * quantity)}\n`;
+            }
+        });
+
+        if (hasRoomServiceOrder) {
+            const subtotalText = document.getElementById('subtotal').textContent;
+            const taxText = document.getElementById('tax').textContent;
+            const totalText = document.getElementById('total-price').textContent;
+            roomServiceMessage += `\n*Subtotal:* ${subtotalText}\n*Pajak (21%):* ${taxText}\n*TOTAL BAYAR:* ${totalText}\n\n`;
+            message += roomServiceMessage;
         }
-        roomServiceList.addEventListener('input', function(event) {
-            if (event.target.classList.contains('quantity-input')) {
-                calculateTotal();
-            }
-        });
-        roomServiceList.addEventListener('click', function(event) {
-            const target = event.target;
-            if (target.classList.contains('quantity-btn')) {
-                const action = target.dataset.action;
-                const input = target.parentElement.querySelector('.quantity-input');
-                let currentValue = parseInt(input.value);
-                if (action === 'increase') {
-                    input.value = currentValue + 1;
-                } else if (action === 'decrease' && currentValue > 0) {
-                    input.value = currentValue - 1;
-                }
-                input.dispatchEvent(new Event('input'));
-            }
-        });
-        submitBtn.addEventListener('click', function() {
-            // ---- Anda bisa mengubah nomor tujuan di sini ----
-            const nomorWhatsAppTujuan = '628112107117'; // Awali dengan 62, tanpa '+' atau '0'.
-            // ----------------------------------------------------
-            const nomorKamar = document.getElementById('nomor-kamar').value;
-            if (!nomorKamar) {
-                alert('Mohon isi nomor kamar Anda terlebih dahulu.');
-                return;
-            }
-            let message = `*--- PERMINTAAN BARU ---*\n`;
-            message += `*KAMAR NOMOR: ${nomorKamar}*\n\n`;
-            const amenities = document.querySelectorAll('#amenities-list input:checked');
-            if (amenities.length > 0) {
-                message += `*A. ROOM AMENITIES:*\n`;
-                amenities.forEach(item => {
-                    message += `- ${item.value}\n`;
-                });
-                message += `\n`;
-            }
-            const roomServiceItems = document.querySelectorAll('#room-service-list .quantity-input');
-            let hasRoomServiceOrder = false;
-            let roomServiceMessage = `*B. ROOM SERVICE:*\n`;
-            roomServiceItems.forEach(item => {
-                const quantity = parseInt(item.value);
-                if (quantity > 0) {
-                    hasRoomServiceOrder = true;
-                    const name = item.dataset.name;
-                    const price = parseFloat(item.dataset.price);
-                    roomServiceMessage += `- ${name} (x${quantity}) - ${formatRupiah(price * quantity)}\n`;
-                }
-            });
-            if (hasRoomServiceOrder) {
-                const subtotalText = document.getElementById('subtotal').textContent;
-                const taxText = document.getElementById('tax').textContent;
-                const totalText = document.getElementById('total-price').textContent;
-                roomServiceMessage += `\n*Subtotal:* ${subtotalText}\n`;
-                roomServiceMessage += `*Pajak (21%):* ${taxText}\n`;
-                roomServiceMessage += `*TOTAL BAYAR:* ${totalText}\n\n`;
-                message += roomServiceMessage;
-            }
-            const specialRequest = document.getElementById('special-request').value.trim();
-            if (specialRequest) {
-                message += `*C. SPECIAL REQUEST:*\n${specialRequest}\n\n`;
-            }
-            const rating = document.querySelector('input[name="rating"]:checked');
-            if (rating) {
-                message += `*RATING PELAYANAN:*\n${rating.value} dari 5 Bintang ⭐\n`;
-            }
-            if (amenities.length === 0 && !hasRoomServiceOrder && !specialRequest) {
-                alert('Anda belum memilih permintaan apapun.');
-                return;
-            }
-            const encodedMessage = encodeURIComponent(message);
-            // Menggunakan variabel yang benar
-            const whatsappURL = `https://wa.me/${nomorWhatsAppTujuan}?text=${encodedMessage}`;
-            alert('Kindly wait for your request to be delivered');
-            window.open(whatsappURL, '_blank');
-        });
-    </script>
+
+        const specialRequest = document.getElementById('special-request').value.trim();
+        if (specialRequest) {
+            message += `*C. SPECIAL REQUEST:*\n${specialRequest}\n\n`;
+        }
+
+        const rating = document.querySelector('input[name="rating"]:checked');
+        if (rating) {
+            message += `*RATING PELAYANAN:*\n${rating.value} dari 5 Bintang ⭐\n`;
+        }
+
+        if (amenities.length === 0 && !hasRoomServiceOrder && !specialRequest) {
+            alert('Anda belum memilih permintaan apapun.');
+            return;
+        }
+
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappURL = `https://wa.me/${nomorWhatsAppTujuan}?text=${encodedMessage}`;
+        
+        alert('Kindly wait for your request to be delivered');
+        window.open(whatsappURL, '_blank');
+    });
+</script>
 </body>
+
 </html>
