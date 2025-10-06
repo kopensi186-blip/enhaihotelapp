@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Guest Service</title>
+    <style>
+        body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f4f9;color:#333;margin:0;padding:20px}.container{max-width:600px;margin:auto;background:#fff;padding:25px;border-radius:10px;box-shadow:0 4px 8px rgba(0,0,0,.1)}h1,h2{color:#0056b3;border-bottom:2px solid #eef;padding-bottom:10px}.input-group{margin-bottom:20px}.input-group label{display:block;font-weight:bold;margin-bottom:5px}.input-group input{width:100%;padding:10px;border:1px solid #ccc;border-radius:5px;box-sizing:border-box;font-size:1.1em}details{margin-bottom:15px;border:1px solid #ddd;border-radius:5px;overflow:hidden}summary{font-size:1.2em;font-weight:bold;padding:15px;background-color:#f9f9f9;cursor:pointer;outline:none}.content{padding:15px}.checkbox-group label{display:block;margin-bottom:10px}.menu-item,.beverage-item{display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed #eee;padding:10px 0;flex-wrap:wrap}.menu-item .description,.beverage-item .description{font-size:.9em;color:#666;margin-top:5px}.quantity-control{display:flex;align-items:center}.quantity-btn{width:35px;height:35px;font-size:1.5em;font-weight:bold;border:1px solid #ccc;background-color:#f7f7f7;cursor:pointer;border-radius:5px}.quantity-input{width:45px;height:35px;text-align:center;border:1px solid #ccc;border-left:none;border-right:none;font-size:1.1em;-moz-appearance:textfield}.quantity-input::-webkit-outer-spin-button,.quantity-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}.beverage-item .options{display:flex;gap:15px;align-items:center}.beverage-item .option-group{text-align:center}.beverage-item .option-group .price{font-size:.8em;color:#555}textarea{width:100%;height:80px;padding:10px;border:1px solid #ccc;border-radius:5px;box-sizing:border-box}.rating-stars{display:flex;flex-direction:row-reverse;justify-content:center;margin-top:10px}.rating-stars input[type=radio]{display:none}.rating-stars label{font-size:2em;color:#ccc;cursor:pointer;transition:color .2s}.rating-stars input[type=radio]:checked~label,.rating-stars label:hover,.rating-stars label:hover~label{color:#f5b301}.total-section{text-align:right;margin-top:20px;font-size:1.2em;font-weight:bold}#submit-btn{display:block;width:100%;padding:15px;background-color:#007bff;color:#fff;border:none;border-radius:5px;font-size:1.2em;cursor:pointer;margin-top:20px}#submit-btn:hover{background-color:#0056b3}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Guest Service Request</h1>
+        <div class="input-group">
+            <label for="nomor-kamar">Nomor Kamar Anda</label>
+            <input type="number" id="nomor-kamar" placeholder="Contoh: 301" required>
+        </div>
+        <p>Silakan pilih layanan yang Anda butuhkan.</p>
+        <details>
+            <summary>A. Room Amenities</summary>
+            <div class="content checkbox-group" id="amenities-list"><label><input type="checkbox" value="Sabun Mandi Cair"> Sabun Mandi Cair</label><label><input type="checkbox" value="Sikat Gigi"> Sikat Gigi</label><label><input type="checkbox" value="Pasta Gigi"> Pasta Gigi</label><label><input type="checkbox" value="Sleeper"> Sleeper</label><label><input type="checkbox" value="Sajadah"> Sajadah</label><label><input type="checkbox" value="Sarung"> Sarung</label><label><input type="checkbox" value="Mukena"> Mukena</label></div>
+        </details>
+        <details>
+            <summary>B. Room Service</summary>
+            <div class="content" id="room-service-list">
+                <h2>Food Menu</h2>
+                <div class="menu-item"><div><span>Oxtail Soup</span><div class="description">Aromatic soup served with white rice, emping crackers, pickled vegetables, and sambal (Rp 80.000)</div></div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="80000" data-name="Oxtail Soup"><button class="quantity-btn" data-action="increase">+</button></div></div>
+                <div class="menu-item"><div><span>Fried Noodle</span><div class="description">Wok-fried noodles cooked to perfection with fresh ingredients (Rp 40.000)</div></div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="40000" data-name="Fried Noodle"><button class="quantity-btn" data-action="increase">+</button></div></div>
+                <div class="menu-item"><div><span>Fried Rice</span><div class="description">The flavorful smoky and savory signature fried rice (Rp 40.000)</div></div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="40000" data-name="Fried Rice"><button class="quantity-btn" data-action="increase">+</button></div></div>
+                <div class="menu-item"><div><span>Omelette</span><div class="description">Include with freshly fried fries and selection toppings of smoked beef, paprika, and cheese (Rp 35.000)</div></div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="35000" data-name="Omelette"><button class="quantity-btn" data-action="increase">+</button></div></div>
+                <div class="menu-item"><div><span>Spaghetti Carbonara</span><div class="description">Fresh pasta combined with perfectly balanced mixture of eggs, cheese, and fat (Rp 30.000)</div></div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="30000" data-name="Spaghetti Carbonara"><button class="quantity-btn" data-action="increase">+</button></div></div>
+                <div class="menu-item"><div><span>Fettuccine in Cream</span><div class="description">Al dente cooked pasta tossed in a rich and velvety creamy sauce (Rp 30.000)</div></div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="30000" data-name="Fettuccine in Cream"><button class="quantity-btn" data-action="increase">+</button></div></div>
+                <div class="menu-item"><div><span>Spaghetti Bolognese</span><div class="description">A rich and hearty dish with a blend of Italian herbs (Rp 30.000)</div></div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="30000" data-name="Spaghetti Bolognese"><button class="quantity-btn" data-action="increase">+</button></div></div>
+                <div class="menu-item"><div><span>Instant Noodle</span><div class="description">Comforting dish could be both fried or in soup (Rp 12.000)</div></div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="12000" data-name="Instant Noodle"><button class="quantity-btn" data-action="increase">+</button></div></div>
+                <h2>Beverage Menu</h2>
+                <div class="beverage-item"><span>Americano</span><div class="options"><div class="option-group"><label>Hot</label><div class="price">(Rp 15.000)</div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="15000" data-name="Americano (Hot)"><button class="quantity-btn" data-action="increase">+</button></div></div><div class="option-group"><label>Ice</label><div class="price">(Rp 18.000)</div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="18000" data-name="Americano (Ice)"><button class="quantity-btn" data-action="increase">+</button></div></div></div></div>
+                <div class="beverage-item"><span>Cafe Latte</span><div class="options"><div class="option-group"><label>Hot</label><div class="price">(Rp 22.000)</div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="22000" data-name="Cafe Latte (Hot)"><button class="quantity-btn" data-action="increase">+</button></div></div><div class="option-group"><label>Ice</label><div class="price">(Rp 25.000)</div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="25000" data-name="Cafe Latte (Ice)"><button class="quantity-btn" data-action="increase">+</button></div></div></div></div>
+                <div class="beverage-item"><span>Cappuccino</span><div class="options"><div class="option-group"><label>Hot</label><div class="price">(Rp 20.000)</div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="20000" data-name="Cappuccino (Hot)"><button class="quantity-btn" data-action="increase">+</button></div></div><div class="option-group"><label>Ice</label><div class="price">(Rp 23.000)</div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="23000" data-name="Cappuccino (Ice)"><button class="quantity-btn" data-action="increase">+</button></div></div></div></div>
+                <div class="beverage-item"><span>Flat White</span><div class="options"><div class="option-group"><label>Hot</label><div class="price">(Rp 23.000)</div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="23000" data-name="Flat White (Hot)"><button class="quantity-btn" data-action="increase">+</button></div></div><div class="option-group"><label>Ice</label><div class="price">(Rp 26.000)</div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="26000" data-name="Flat White (Ice)"><button class="quantity-btn" data-action="increase">+</button></div></div></div></div>
+                <div class="menu-item"><div><span>Chilled Juices</span><div class="description">(based on availability) (Rp 12.000)</div></div><div class="quantity-control"><button class="quantity-btn" data-action="decrease">-</button><input type="number" class="quantity-input" value="0" min="0" data-price="12000" data-name="Chilled Juices"><button class="quantity-btn" data-action="increase">+</button></div></div>
+                <div class="total-section"><div>Subtotal: <span id="subtotal">Rp 0</span></div><div>Tax (21%): <span id="tax">Rp 0</span></div><div>Total: <span id="total-price">Rp 0</span></div></div>
+            </div>
+        </details>
+        <details>
+            <summary>C. Special Request</summary>
+            <div class="content"><p>Tuliskan permintaan khusus Anda di bawah ini:</p><textarea id="special-request" placeholder="Contoh: Tolong sediakan piring dan sendok tambahan."></textarea></div>
+        </details>
+        <h2>Rating Service and Product</h2>
+        <div class="rating-stars"><input type="radio" id="star1" name="rating" value="1"><label for="star1">★</label><input type="radio" id="star2" name="rating" value="2"><label for="star2">★</label><input type="radio" id="star3" name="rating" value="3"><label for="star3">★</label><input type="radio" id="star4" name="rating" value="4"><label for="star4">★</label><input type="radio" id="star5" name="rating" value="5"><label for="star5">★</label></div>
+        <button id="submit-btn">SUBMIT</button>
+    </div>
+    <script>
+        const roomServiceList = document.getElementById('room-service-list');
+        const submitBtn = document.getElementById('submit-btn');
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(number);
+        }
+        function calculateTotal() {
+            let subtotal = 0;
+            const items = roomServiceList.querySelectorAll('.quantity-input');
+            items.forEach(item => {
+                const price = parseFloat(item.dataset.price);
+                const quantity = parseInt(item.value);
+                subtotal += price * quantity;
+            });
+            const tax = subtotal * 0.21;
+            const total = subtotal + tax;
+            document.getElementById('subtotal').textContent = formatRupiah(subtotal);
+            document.getElementById('tax').textContent = formatRupiah(tax);
+            document.getElementById('total-price').textContent = formatRupiah(total);
+        }
+        roomServiceList.addEventListener('input', function(event) {
+            if (event.target.classList.contains('quantity-input')) {
+                calculateTotal();
+            }
+        });
+        roomServiceList.addEventListener('click', function(event) {
+            const target = event.target;
+            if (target.classList.contains('quantity-btn')) {
+                const action = target.dataset.action;
+                const input = target.parentElement.querySelector('.quantity-input');
+                let currentValue = parseInt(input.value);
+                if (action === 'increase') {
+                    input.value = currentValue + 1;
+                } else if (action === 'decrease' && currentValue > 0) {
+                    input.value = currentValue - 1;
+                }
+                input.dispatchEvent(new Event('input'));
+            }
+        });
+        submitBtn.addEventListener('click', function() {
+            // ---- Anda bisa mengubah nomor tujuan di sini ----
+            const nomorWhatsAppTujuan = '628112107117'; // Awali dengan 62, tanpa '+' atau '0'.
+            // ----------------------------------------------------
+            const nomorKamar = document.getElementById('nomor-kamar').value;
+            if (!nomorKamar) {
+                alert('Mohon isi nomor kamar Anda terlebih dahulu.');
+                return;
+            }
+            let message = `*--- PERMINTAAN BARU ---*\n`;
+            message += `*KAMAR NOMOR: ${nomorKamar}*\n\n`;
+            const amenities = document.querySelectorAll('#amenities-list input:checked');
+            if (amenities.length > 0) {
+                message += `*A. ROOM AMENITIES:*\n`;
+                amenities.forEach(item => {
+                    message += `- ${item.value}\n`;
+                });
+                message += `\n`;
+            }
+            const roomServiceItems = document.querySelectorAll('#room-service-list .quantity-input');
+            let hasRoomServiceOrder = false;
+            let roomServiceMessage = `*B. ROOM SERVICE:*\n`;
+            roomServiceItems.forEach(item => {
+                const quantity = parseInt(item.value);
+                if (quantity > 0) {
+                    hasRoomServiceOrder = true;
+                    const name = item.dataset.name;
+                    const price = parseFloat(item.dataset.price);
+                    roomServiceMessage += `- ${name} (x${quantity}) - ${formatRupiah(price * quantity)}\n`;
+                }
+            });
+            if (hasRoomServiceOrder) {
+                const subtotalText = document.getElementById('subtotal').textContent;
+                const taxText = document.getElementById('tax').textContent;
+                const totalText = document.getElementById('total-price').textContent;
+                roomServiceMessage += `\n*Subtotal:* ${subtotalText}\n`;
+                roomServiceMessage += `*Pajak (21%):* ${taxText}\n`;
+                roomServiceMessage += `*TOTAL BAYAR:* ${totalText}\n\n`;
+                message += roomServiceMessage;
+            }
+            const specialRequest = document.getElementById('special-request').value.trim();
+            if (specialRequest) {
+                message += `*C. SPECIAL REQUEST:*\n${specialRequest}\n\n`;
+            }
+            const rating = document.querySelector('input[name="rating"]:checked');
+            if (rating) {
+                message += `*RATING PELAYANAN:*\n${rating.value} dari 5 Bintang ⭐\n`;
+            }
+            if (amenities.length === 0 && !hasRoomServiceOrder && !specialRequest) {
+                alert('Anda belum memilih permintaan apapun.');
+                return;
+            }
+            const encodedMessage = encodeURIComponent(message);
+            // Menggunakan variabel yang benar
+            const whatsappURL = `https://wa.me/${nomorWhatsAppTujuan}?text=${encodedMessage}`;
+            alert('Kindly wait for your request to be delivered');
+            window.open(whatsappURL, '_blank');
+        });
+    </script>
+</body>
+</html>
